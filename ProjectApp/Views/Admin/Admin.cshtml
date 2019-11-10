@@ -1,0 +1,170 @@
+﻿@model ProjectApp.ViewModels.AdminViewModel
+@{
+    ViewBag.Title = "Admin";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <style type="text/css">
+
+        .tab {
+            overflow: hidden;
+            background-color: #f1f1f1;
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+        }
+
+            .tab a {
+                outline: none;
+                cursor: pointer;
+                padding: 14px 16px;
+                transition: 0.3s;
+                width: 100%;
+                border-bottom: 1px solid #808080;
+            }
+
+                .tab a:hover {
+                    background-color: #ccc;
+                }
+
+                .tab a.active {
+                    background-color: #ffffff;
+                    border: 1px solid #808080;
+                    border-bottom: none;
+                }
+
+
+        .tabcontent {
+            display: none;
+            border: 1px solid #808080;
+            border-top: none;
+            animation: fadeEffect 1s; /* Fading effect takes 1 second */
+            height: 100%;
+        }
+
+        .divSeparator {
+            padding-top: 70px;
+        }
+
+        /* Go from zero to full opacity */
+        @@keyframes fadeEffect {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .table {
+            width: 100%;
+        }
+
+        th, td {
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .btn {
+            margin-top: 30px;
+            margin-left: 10px;
+        }
+
+        .lblRegister {
+            margin-top: 36px;
+            margin-left: 10px;
+        }
+    </style>
+
+</head>
+<body>
+
+    <div class="tab">
+        <a class="tablinks" id="default" onclick="openTab(event, 'Projects')">Project list</a>
+        <a class="tablinks" onclick="openTab(event, 'Users')">User list</a>
+    </div>
+
+    <div id="Projects" class="tabcontent">
+
+        @Html.ActionLink("Add new project", "ModifyProject", "Admin", new { @class = "btn btn-primary" })
+
+
+        <div class="divSeparator">
+            <table class="table table-striped table-hover">
+                <tr>
+                    <th>Name </th>
+                    <th>Client </th>
+                    <th>Location</th>
+                    <th>Description</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                @foreach (var project in Model.ProjectList)
+                {
+                    <tr>
+                        <td>@project.Name</td>
+                        <td>@project.Client</td>
+                        <td>@project.Location</td>
+                        <td>@project.Description</td>
+                        <td><a href="@Url.Action("ModifyProject", "Admin", new { Id = project.Id })">Edit</a></td>
+                        <td>Delete</td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+    <div id="Users" class="tabcontent">
+        <label class="lblRegister">Please register new user through register page.</label>
+        <div class="divSeparator">
+            <table class="table table-striped table-hover">
+                <tr>
+                    <th>Username </th>
+                    <th>Role </th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                @foreach (var user in Model.UserList)
+                {
+                    <tr>
+                        <td>@user.UserName</td>
+                        <td>@user.Roles.SingleOrDefault().RoleId</td>
+                        <td><a href="@Url.Action("ModifyUser", "Admin", new { Id = user.Id })">Edit</a></td>
+                        <td>Delete</td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+    <script type="text/javascript">
+        function openTab(evt, curentTab) {
+            // Declare all variables
+            var i, tabcontent, tablinks;
+
+            // Get all elements with class="tabcontent" and hide them
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+
+            // Get all elements with class="tablinks" and remove the class "active"
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+
+            // Show the current tab, and add an "active" class to the button that opened the tab
+            document.getElementById(curentTab).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+
+        document.getElementById("default").click();
+    </script>
+</body>
+
+
+</html>

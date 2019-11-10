@@ -9,26 +9,63 @@
 
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+    @*<div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                </div>
+                <div class="navbar-collapse collapse navbar-expand">
+                    <ul class="nav navbar-nav">
+                        <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                        <li>@Html.ActionLink("Projects", "Projects", "Home")</li>
+                        <li>@Html.ActionLink("Admin", "Admin", "Home")</li>
+                    </ul>
+                    @Html.Partial("_LoginPartial")
+                </div>
             </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                </ul>
-                @Html.Partial("_LoginPartial")
-            </div>
+        </div>*@
+
+    <nav class="navbar fixed-top navbar-expand-lg ">
+        <a class="navbar-brand" href="#"></a>
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#myNavbar"
+                aria-controls="myNavbar" aria-expanded="false" aria-label="Toggle navigation"
+                style="border-color: rgba(0,0,0,0.1)">
+            <span class="navbar-toggler-icon toggle-icon"></span>
+        </button>
+
+        <div class="navbar-collapse collapse" id="myNavbar">
+            <ul class="nav navbar-nav ml-auto mt-2 mt-lg-0">
+                <li class="nav-item">
+                    @Html.ActionLink("Register", "Register", "Account")
+                </li>
+                <li class="nav-item">
+                    @Html.ActionLink("Login", "Login", "Account")
+                </li>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <li class="nav-item">
+                        @Html.ActionLink("Projects", "Projects", "Projects")
+                    </li>
+                }
+                @if (User.Identity.IsAuthenticated)
+                {
+                    //if (User.IsInRole("ADMIN"))
+                    //{
+                    <li class="nav-item">
+                        @Html.ActionLink("Admin Page", "Admin", "Admin")
+                    </li>
+                    //}                        
+                }
+            </ul>
         </div>
-    </div>
+    </nav>
+
     <div class="container body-content">
         @RenderBody()
         <hr />
@@ -40,5 +77,6 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
+    @RenderSection("MyScripts", required: false)
 </body>
 </html>

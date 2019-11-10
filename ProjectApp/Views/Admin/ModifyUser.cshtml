@@ -1,0 +1,21 @@
+﻿@model ProjectApp.ViewModels.AdminViewModel
+@{
+    ViewBag.Title = "ModifyUsers";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>ModifyUsers</h2>
+
+
+@using (Html.BeginForm("ModifyU", "Admin"))
+{
+    <div class="form-group">
+        @Html.LabelFor(m => m.SingleUser.UserName)
+        @Html.TextBoxFor(m => m.SingleUser.UserName, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.DropDownListFor(m => m.SelectedRole, Model.RolesList, new { @class = "form-control" })
+    </div>
+    @Html.HiddenFor(m => m.SingleUser.Id)
+    <button type="submit" class="btn btn-primary">Submit</button>
+}

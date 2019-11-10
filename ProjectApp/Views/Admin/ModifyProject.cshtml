@@ -1,0 +1,45 @@
+﻿
+@model ProjectApp.Models.Project
+@{
+    /**/
+
+    ViewBag.Title = "ModifyProject";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@if (Model.Id>0)
+{
+    <h2>@Model.Name</h2>
+}
+else
+{
+    <h2>New project</h2>
+}
+
+@using (Html.BeginForm("ModifyP", "Admin"))
+{
+    <div class="form-group">
+        @Html.LabelFor(m => m.Name)
+        @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Client)
+        @Html.TextBoxFor(m => m.Client, new { @class = "form-control" })
+    </div>
+
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Location)
+        @Html.TextBoxFor(m => m.Location, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Description)
+        @Html.TextAreaFor(m => m.Description, new { @class = "form-control" })
+    </div>
+    <div class="checkbox">
+        <label>
+            @Html.CheckBoxFor(m => m.Visibility) Visibility
+        </label>
+    </div>
+    @Html.HiddenFor(m => m.Id)
+    <button type="submit" class="btn btn-primary">Submit</button>
+}

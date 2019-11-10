@@ -1,0 +1,143 @@
+﻿@model ProjectApp.ViewModels.ProjectsViewModel
+@{
+    ViewBag.Title = "Projects";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <style type="text/css">
+        body {
+            background-color: #e9ebee;
+        }
+
+        h3 {
+            /*background-color: #3399F3;*/
+            width: 95%;
+            border-bottom: 1px solid #dadde1;
+            margin: 10px;
+        }
+
+        label {
+            margin: 5px;
+            height: 25px;
+        }
+
+        .containerProject {
+            text-align: center;
+        }
+
+        .projectContainer {
+            display: inline-block;
+            width: 50%;
+            border: 1px dotted;
+            background-color: white;
+            margin-top: 10px;
+        }
+
+        .commentContainer {
+            border-radius: 25px;
+            background-color: #f2f3f5;
+            margin: 15px;
+            text-align: left;
+        }
+
+        .left {
+            float: left;
+        }
+
+        .right {
+            float: right;
+        }
+
+        .lblName {
+            color: #385898;
+            font-weight: bold;
+        }
+
+        .lblDiv {
+            height: 25px;
+        }
+
+        button {
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="containerProject">
+        @for (int i = 0; i < Model.ProjectList.Count; i++)
+        {
+            if (@Model.ProjectList[i].Visibility == true)
+            {
+                <div class="projectContainer" id="@Model.ProjectList[i].Id">
+                    <h3>@Model.ProjectList[i].Name</h3>
+                    <p>@Model.ProjectList[i].Description</p>
+                    <div class="lblDiv">
+                        <label class="left">@Model.ProjectList[i].Client</label>
+                        <label class="right">@Model.ProjectList[i].Location</label>
+                    </div>
+                    <div id="commentsSection">
+                        @for (int j = 0; j < Model.ProjectList[i].CommentList.Count; j++)
+                        {
+                            <div class="commentContainer">
+                                <label class="lblName">@Model.ProjectList[i].CommentList[j].UserName</label>
+                                <label class="lblText">@Model.ProjectList[i].CommentList[j].Text</label>
+                            </div>
+                        }
+                    </div>
+                    <div style="padding-top:10px;">
+                        <textarea type="text"></textarea>
+                    </div>
+                    <button class="btn btn-primary" onclick="addComment(this,@Model.ProjectList[i].Id);">Add Comment</button>
+                </div>
+            }
+        }
+    </div>
+    <div id="HasProjects" style="display:none;padding:20px;">
+        Sorry admin didn't post any projects yet.
+    </div>
+    <script type="text/javascript">
+
+        function addComment(e, CommId) {
+            var getDiv = e.previousElementSibling;
+            var CommentText = getDiv.children[0].value;
+            var data = {
+                text: CommentText,
+                ProjectId: CommId
+            };
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("SaveComment", "Projects")',
+                //contentType: "application/json; charset=utf-8",
+                dataType: "text",
+                data: data,
+                success: successFunc,
+                error: errorFunc
+            });
+            function successFunc(data) {
+                console.log(data);
+                window.location.reload();
+            }
+
+            function errorFunc() {
+                alert('error');
+            }
+        }
+
+        function checkVisibility() {
+
+            var containerDiv = document.getElementsByClassName("containerProject");
+            if (containerDiv[0].children.length == 0) {
+                document.getElementById("HasProjects").style.display = "block";
+            }
+        }
+        checkVisibility();
+    </script>
+</body>
+</html>
